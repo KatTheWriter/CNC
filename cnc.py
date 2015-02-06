@@ -13,8 +13,10 @@ x = 400
 y = 300
 barheight = 125
 step = 5
+moved = 0
 
 def draw():
+    global moved
     moved = 0;
     screen.blit(background, backgroundRect)
     screen.blit(bod, (x,y))
@@ -23,6 +25,23 @@ def draw():
 def tell():
     print 'Bod is at (' + repr(x) + ',' + repr(y) + ')'
 
+def move(dx,dy):
+    nx = x + dx
+    ny = y + dy
+    # edges
+    if (ny < 0 + step or ny > 600-barheight-step or nx < 0 + step or nx > 800-52-step):
+        print 'No Way, Bod'
+        return
+    # shed
+    if (ny < 125 and nx > 515):
+        print 'Keep out of the shed, Bod'
+        return
+
+    global x, y, moved
+    x = nx
+    y = ny
+    moved = 1
+    
 draw()
 
 while 1:
@@ -32,24 +51,16 @@ while 1:
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_UP]:
             print 'pressed UP'
-            if (y > 0 + step):
-                y = y - step
-                moved = 1
+            move(0,-step)
         if pressed[pygame.K_DOWN]:
             print 'pressed DOWN'
-            if (y < 600-barheight-step):
-               y = y + step
-               moved = 1
+            move(0,step)
         if pressed[pygame.K_LEFT]:
             print 'pressed LEFT'
-            if (x > 0 + step):
-                x = x - step
-                moved = 1
+            move(-step, 0)
         if pressed[pygame.K_RIGHT]:
             print 'pressed RIGHT'
-            if (x < 800-52-step):
-                x = x + step
-                moved = 1
+            move(step, 0)
         if pressed[pygame.K_q]:
             print 'pressed Q'
             pygame.display.quit()
