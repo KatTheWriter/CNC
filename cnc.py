@@ -26,6 +26,7 @@ def tell():
     print 'Bod is at (' + repr(x) + ',' + repr(y) + ')'
 
 def move(dx,dy):
+    global x, y, moved
     nx = x + dx
     ny = y + dy
     # edges
@@ -37,7 +38,6 @@ def move(dx,dy):
         print 'Keep out of the shed, Bod'
         return
 
-    global x, y, moved
     x = nx
     y = ny
     moved = 1
