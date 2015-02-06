@@ -1,9 +1,9 @@
 import sys, pygame
 pygame.init()
 
-screen = pygame.display.set_mode((640,480))
+screen = pygame.display.set_mode((800,600))
 
-background = pygame.image.load("bg.jpg")
+background = pygame.image.load("background.bmp")
 backgroundRect = background.get_rect()
 
 screen.blit(background, backgroundRect)
