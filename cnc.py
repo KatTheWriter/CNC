@@ -42,12 +42,14 @@ while 1:
                moved = 1
         if pressed[pygame.K_LEFT]:
             print 'pressed LEFT'
-            x = x - step
-            moved = 1
+            if (x > 0 + step):
+                x = x - step
+                moved = 1
         if pressed[pygame.K_RIGHT]:
             print 'pressed RIGHT'
-            x = x + step
-            moved = 1
+            if (x < 800-52-step):
+                x = x + step
+                moved = 1
         if pressed[pygame.K_q]:
             print 'pressed Q'
             pygame.display.quit()
