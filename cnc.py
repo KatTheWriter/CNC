@@ -19,6 +19,8 @@ def draw():
     global moved
     moved = 0;
     screen.blit(background, backgroundRect)
+    pygame.draw.line(screen, 0xffffff, (0,y), (800,y), 1)
+    pygame.draw.line(screen, 0xffffff, (x,0), (x,600), 1)
     screen.blit(bod, (x,y))
     pygame.display.flip()
 
@@ -41,7 +43,14 @@ def move(dx,dy):
     x = nx
     y = ny
     moved = 1
-    
+
+def walkto(pos):
+    global x, y, moved
+    print 'Moving to (' + repr(pos[0]) + ',' + repr(pos[1]) + ')'
+    x = pos[0]
+    y = pos[1]
+    moved = 1 
+
 draw()
 
 while 1:
@@ -65,6 +74,9 @@ while 1:
             print 'pressed Q'
             pygame.display.quit()
             sys.exit()
-        if moved:
-            draw()
-
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        mpos = pygame.mouse.get_pos()
+        print 'click at ' + repr(mpos)
+        walkto(mpos)	
+    if moved:
+        draw()
