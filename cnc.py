@@ -11,16 +11,28 @@ pygame.display.flip()
 
 x = 400
 y = 300
-barheight = 125
+barheight = 75
 step = 5
 moved = 0
 
 displaylist = [
         {
-        "name": "shed",
-        "obstacle": 1,
-        "colour": 0xbbbbbb,
-        "location": ( (565,0), (600,125) )
+            "name": "garden",
+            "type": "border",
+            "colour": 0x22ee22,
+            "location": pygame.Rect(0,0, 800,600)
+        },
+        {
+            "name": "shed",
+            "type": "obstacle",
+            "colour": 0xbbbbbb,
+            "location": pygame.Rect(565,0, 245,125)
+        },
+        {
+            "name": "menubar",
+            "type": "obstacle",
+            "colour": 0xffffff,
+            "location": pygame.Rect(0,600-barheight, 800,600)
         }
     ]
 
@@ -39,18 +51,31 @@ def draw():
 def tell():
     print 'Bod is at (' + repr(x) + ',' + repr(y) + ')'
 
+def overlap(rect, x, y, width, height):
+    print("rect top=" + repr(rect.top) + ",left=" + repr(rect.left) + ",bottom=" + repr(rect.bottom) + ",right=" + repr(rect.right))
+    ret = (x < rect.right and x+width > rect.left and y+height > rect.top and y < rect.bottom)
+    print("overlap " + repr(rect) + "," + repr(x) + "," + repr(y) + "," + repr(width) + "=>" + repr(ret))
+    return ret
+
+def inside(rect, x, y, width, height):
+    print("rect top=" + repr(rect.top) + ",left=" + repr(rect.left) + ",bottom=" + repr(rect.bottom) + ",right=" + repr(rect.right))
+    ret = (x+width < rect.right and x > rect.left and y > rect.top and y+height < rect.bottom)
+    print("overlap " + repr(rect) + "," + repr(x) + "," + repr(y) + "," + repr(width) + "=>" + repr(ret))
+    return ret
+    
 def move(dx,dy):
     global x, y, moved
     nx = x + dx
     ny = y + dy
-    # edges
-    if (ny < 0 + step or ny > 600-barheight-step or nx < 0 + step or nx > 800-52-step):
-        print 'No Way, Bod'
-        return
-    # shed
-    if (ny < 125 and nx > 515):
-        print 'Keep out of the shed, Bod'
-        return
+
+    # objects
+    for obj in displaylist:
+        if (obj["type"] == "obstacle" and overlap(obj["location"], nx, ny, bodsize, bodsize)):
+            print 'Keep out of the ' + obj["name"] + ', Bod'
+            return
+        if (obj["type"] == "border" and not inside(obj["location"], nx, ny, bodsize, bodsize)):
+            print 'Stay in the ' + obj["name"] + ', Bod'
+            return
 
     x = nx
     y = ny
