@@ -84,9 +84,9 @@ def move(dx,dy):
 def walkto(pos):
     global x, y, moved
     print 'Moving to (' + repr(pos[0]) + ',' + repr(pos[1]) + ')'
-    x = pos[0]
-    y = pos[1]
-    moved = 1 
+    dx = pos[0] - x
+    dy = pos[1] - y
+    move(dx,dy)
 
 draw()
 
