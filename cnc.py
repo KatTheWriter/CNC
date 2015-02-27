@@ -15,10 +15,22 @@ barheight = 125
 step = 5
 moved = 0
 
+displaylist = [
+        {
+        "name": "shed",
+        "obstacle": 1,
+        "colour": 0xbbbbbb,
+        "location": ( (565,0), (600,125) )
+        }
+    ]
+
 def draw():
     global moved
     moved = 0;
     screen.blit(background, backgroundRect)
+    for obj in displaylist:
+        screen.fill(obj["colour"], obj["location"])
+                            
     pygame.draw.line(screen, 0xffffff, (0,y), (800,y), 1)
     pygame.draw.line(screen, 0xffffff, (x,0), (x,600), 1)
     screen.blit(bod, (x,y))
